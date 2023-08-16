@@ -23,6 +23,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Zomato',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scaffoldBackgroundColor: Color(0xFFF5F5F3),
         colorScheme:
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 125, 11)),
         useMaterial3: true,

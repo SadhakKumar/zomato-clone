@@ -1,0 +1,22 @@
+[
+    {
+        "name": "burger",
+        "image": "assets/images/burger.png"
+    },
+    {
+        "name": "snacks",
+        "image": "assets/images/Snack.png"
+    },
+    {
+        "name": "pizza",
+        "image": "assets/images/pizza.png"
+    },
+    {
+        "name": "drinks",
+        "image": "assets/images/drink.png"
+    },
+    {
+        "name": "biryani",
+        "image": "assets/images/biryani.png"
+    }
+]
