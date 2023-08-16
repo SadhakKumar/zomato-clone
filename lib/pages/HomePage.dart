@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'home',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color.fromARGB(255, 255, 125, 11),
+      ),
+    );
+  }
+}
