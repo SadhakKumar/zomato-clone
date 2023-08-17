@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zomato_clone/model/CategoriesModel.dart';
 import 'package:zomato_clone/widgets/AppbarWidget.dart';
-import 'package:zomato_clone/widgets/CategoryWidget.dart';
+import 'package:zomato_clone/widgets/CategoryWrapper.dart';
 import 'package:zomato_clone/widgets/SearchTab.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,7 +32,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          CategoryWidget(),
+          CategoryWrapper(),
         ],
       ),
     );
