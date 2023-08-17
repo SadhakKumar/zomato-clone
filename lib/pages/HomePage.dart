@@ -6,6 +6,7 @@ import 'package:zomato_clone/widgets/AppbarWidget.dart';
 import 'package:zomato_clone/widgets/CategoryWrapper.dart';
 import 'package:zomato_clone/widgets/SearchTab.dart';
 
+import '../widgets/NewestListWidget.dart';
 import '../widgets/PopularItems.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,6 +47,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           PopularItems(),
+          Padding(
+            padding: EdgeInsets.only(top: 20, left: 20),
+            child: Text(
+              "Newest",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          NewestListWidget(),
         ],
       ),
     );
