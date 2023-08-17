@@ -1,0 +1,38 @@
+[
+    {
+        "name": "pizza",
+        "image": "assets/images/Pizza (1).png",
+        "title": "taste our Hot pizza",
+        "price": "199"
+    },
+    {
+        "name": "burger",
+        "image": "assets/images/burger.png",
+        "title": "taste our Hot Burgers",
+        "price": "159"
+    },
+    {
+        "name": "snacks",
+        "image": "assets/images/Snacks.png",
+        "title": "taste our Snacks",
+        "price": "59"
+    },
+    {
+        "name": "pizza",
+        "image": "assets/images/pizza.png",
+        "title": "taste our Hot pizza",
+        "price": "399"
+    },
+    {
+        "name": "drinks",
+        "image": "assets/images/drink.png",
+        "title": "have our Drinks",
+        "price": "89"
+    },
+    {
+        "name": "biryani",
+        "image": "assets/images/biryani.png",
+        "title": "taste our Hot Biryani",
+        "price": "299"
+    }
+]

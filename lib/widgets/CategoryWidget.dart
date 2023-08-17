@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../model/CategoriesModel.dart';
 
 class CategoryWidget extends StatelessWidget {
-  final String imagePath;
+  final CategoriesModel category;
 
-  CategoryWidget({required this.imagePath});
+  CategoryWidget({required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +29,20 @@ class CategoryWidget extends StatelessWidget {
           ],
         ),
         child: Image.asset(
-          imagePath,
-          width: 50,
+          category.image!,
           height: 50,
+          width: 50,
         ),
       ),
     );
   }
+}
+
+Future<List<CategoriesModel>> fetchCategoriesFromJson() async {
+  final jsonString = await rootBundle.loadString('assets/categories.json');
+  final jsonList = json.decode(jsonString) as List;
+
+  return jsonList.map((jsonCategory) {
+    return CategoriesModel.fromJson(jsonCategory);
+  }).toList();
 }

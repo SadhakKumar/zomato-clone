@@ -6,6 +6,8 @@ import 'package:zomato_clone/widgets/AppbarWidget.dart';
 import 'package:zomato_clone/widgets/CategoryWrapper.dart';
 import 'package:zomato_clone/widgets/SearchTab.dart';
 
+import '../widgets/PopularItems.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -23,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           AppBarWidget(),
           SearchTab(),
           Padding(
-            padding: EdgeInsets.only(top: 20, left: 10),
+            padding: EdgeInsets.only(top: 20, left: 20),
             child: Text(
               "categories",
               style: TextStyle(
@@ -33,6 +35,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           CategoryWrapper(),
+          Padding(
+            padding: EdgeInsets.only(top: 20, left: 20),
+            child: Text(
+              "Popular",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          PopularItems(),
         ],
       ),
     );
