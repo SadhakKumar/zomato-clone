@@ -20,5 +20,4 @@ Payment Gateway:
 ![Screenshot_1692379281](https://github.com/SadhakKumar/zomato-clone/assets/88707901/bbf4cb70-ba78-463d-ac39-928d98b0cc99)
 
 Drawer:
-![Screenshot_1692380286](https://github.com/SadhakKumar/zomato-clone/assets/88707901/3fd6e07c-d155-46fd-96ba-2e8f1be39af0)
-
+![Screenshot_1692380286](https://github.com/SadhakKumar/zomato-clone/assets/88707901/b57649fc-65d6-4b92-8b12-b0893a66e820)
