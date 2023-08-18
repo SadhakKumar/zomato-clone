@@ -36,7 +36,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           'Registration',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.indigo[600],
+        backgroundColor: Color.fromARGB(255, 255, 125, 11),
       ),
       body: Padding(
         padding: const EdgeInsets.all(45.0),
@@ -115,7 +115,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     labelText: 'Password',
                     hintText: 'Enter password',
                     suffixIcon: IconButton(
-                      color: const Color.fromARGB(255, 14, 28, 107),
+                      color: Color.fromARGB(255, 255, 125, 11),
                       icon: Icon(_showPassword
                           ? Icons.visibility
                           : Icons.visibility_off),

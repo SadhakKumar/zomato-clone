@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,21 +29,25 @@ class _CartState extends State<Cart> {
   Map<dynamic, int> cart = {};
   num total = 0;
   Razorpay? _razorpay;
+  StreamController<Map<dynamic, int>> cartStreamController =
+      StreamController<Map<dynamic, int>>();
 
   @override
   void initState() {
+    getCart();
     super.initState();
     _razorpay = Razorpay();
     _razorpay?.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay?.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay?.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    getCart();
+
     getTotalAmount();
     context;
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     cart.clear();
+    cartStreamController.add(cart);
     deleteCart();
     Fluttertoast.showToast(
         msg: "SUCCESS PAYMENT: ${response.paymentId}", timeInSecForIosWeb: 4);
@@ -166,7 +172,7 @@ class _CartState extends State<Cart> {
                                   ),
                                 ),
                                 Container(
-                                  width: 190,
+                                  width: 180,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -259,53 +265,59 @@ class _CartState extends State<Cart> {
               ),
             );
           }),
-      bottomNavigationBar: FutureBuilder<double>(
-        future: getTotalPrice(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return BottomAppBar(
-              child: SizedBox.shrink(),
-            );
-          }
-          return BottomAppBar(
-            child: Container(
-              height: 56,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total: \$${snapshot.data}',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      bottomNavigationBar: StreamBuilder<Map<dynamic, int>>(
+          stream: cartStreamController.stream,
+          builder: (context, snapshot) {
+            return FutureBuilder<double>(
+              future: calculateTotalPrice(snapshot.data!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return BottomAppBar(
+                    child: SizedBox.shrink(),
+                  );
+                }
+                return BottomAppBar(
+                  child: Container(
+                    height: 56,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total: \$${snapshot.data}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            openPaymentPortal(snapshot.data!);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 32), // Adjust padding as needed
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  10), // Adjust border radius as needed
+                            ),
+                            primary: Color.fromARGB(255, 255, 110,
+                                32), // Change the background color
+                          ),
+                          child: Text(
+                            'Place Order',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color:
+                                    Colors.white), // Adjust font size as needed
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      openPaymentPortal(snapshot.data!);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 16,
-                          horizontal: 32), // Adjust padding as needed
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            10), // Adjust border radius as needed
-                      ),
-                      primary: Color.fromARGB(
-                          255, 255, 110, 32), // Change the background color
-                    ),
-                    child: Text(
-                      'Place Order',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white), // Adjust font size as needed
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+                );
+              },
+            );
+          }),
     );
   }
 
@@ -328,6 +340,7 @@ class _CartState extends State<Cart> {
 
     Map<dynamic, int> count = {};
     array.forEach((i) => count[i] = (count[i] ?? 0) + 1);
+    cartStreamController.add(cart);
     return count;
   }
 
@@ -339,6 +352,7 @@ class _CartState extends State<Cart> {
     Map<dynamic, int> count = {};
     array.forEach((i) => count[i] = (count[i] ?? 0) + 1);
     cart = count;
+    cartStreamController.add(cart);
   }
 
   Future<double> getTotalPrice() async {
@@ -349,6 +363,7 @@ class _CartState extends State<Cart> {
           await _itemsCollection.doc(entry.key).get();
       total += itemSnapshot['price'] * entry.value;
     }
+    cartStreamController.add(cart);
     return total;
   }
 
@@ -367,5 +382,16 @@ class _CartState extends State<Cart> {
           await _itemsCollection.doc(entry.key).get();
       total += itemSnapshot['price'] * entry.value;
     }
+    cartStreamController.add(cart);
+  }
+
+  Future<double> calculateTotalPrice(Map<dynamic, int> cartMap) async {
+    double total = 0.0;
+    for (var entry in cartMap.entries) {
+      DocumentSnapshot itemSnapshot =
+          await _itemsCollection.doc(entry.key).get();
+      total += itemSnapshot['price'] * entry.value;
+    }
+    return total;
   }
 }

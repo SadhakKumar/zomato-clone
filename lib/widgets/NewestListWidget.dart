@@ -106,7 +106,7 @@ class _NewestListWidgetState extends State<NewestListWidget> {
                           ),
                         ),
                         Container(
-                          width: 190,
+                          width: 180,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -148,7 +148,7 @@ class _NewestListWidgetState extends State<NewestListWidget> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 8),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
