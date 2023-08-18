@@ -6,6 +6,7 @@ import 'package:zomato_clone/widgets/AppbarWidget.dart';
 import 'package:zomato_clone/widgets/CategoryWrapper.dart';
 import 'package:zomato_clone/widgets/SearchTab.dart';
 
+import '../widgets/DrawerWidget.dart';
 import '../widgets/NewestListWidget.dart';
 import '../widgets/PopularItems.dart';
 
@@ -60,6 +61,7 @@ class _HomePageState extends State<HomePage> {
           NewestListWidget(),
         ],
       ),
+      drawer: DrawerWidget(),
     );
   }
 }

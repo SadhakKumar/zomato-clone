@@ -25,6 +25,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String _email = '';
   String _password = '';
   bool _showPassword = false;
+  List<String> _cart = [];
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +171,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         'name': _name,
         'email': email,
         'contactNumber': _contactNumber,
+        'cart': _cart
       });
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginPage()));

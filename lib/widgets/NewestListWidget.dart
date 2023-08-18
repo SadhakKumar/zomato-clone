@@ -17,11 +17,27 @@ class _NewestListWidgetState extends State<NewestListWidget> {
   final _auth = FirebaseAuth.instance;
   // Points to the root reference
   final storage = FirebaseStorage.instance;
+  List<dynamic> incartArray = [];
+  void initState() {
+    super.initState();
+    // Initialize inCart based on the actual cart status (you can fetch this from Firestore)
+    getCartItems();
+  }
 
-  CollectionReference _usersCollection =
+  getCartItems() async {
+    var user = _auth.currentUser;
+    DocumentSnapshot userSnapshot = await _userCollection.doc(user!.uid).get();
+    List<dynamic> array = userSnapshot['cart'];
+    setState(() {
+      incartArray = array;
+    });
+  }
+
+  CollectionReference _userCollection =
       FirebaseFirestore.instance.collection('users');
   CollectionReference _itemsCollection =
       FirebaseFirestore.instance.collection('items');
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,6 +45,7 @@ class _NewestListWidgetState extends State<NewestListWidget> {
       child: StreamBuilder<QuerySnapshot>(
           stream: _itemsCollection.snapshots(),
           builder: (context, snapshot) {
+            bool inCart = false;
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             }
@@ -140,10 +157,44 @@ class _NewestListWidgetState extends State<NewestListWidget> {
                                   color: Colors.red,
                                   size: 26,
                                 ),
-                                Icon(
-                                  CupertinoIcons.cart,
-                                  color: Colors.red,
-                                  size: 26,
+                                InkWell(
+                                  onTap: () async {
+                                    var user = _auth.currentUser;
+                                    if (user != null) {
+                                      DocumentSnapshot userSnapshot =
+                                          await _userCollection
+                                              .doc(user.uid)
+                                              .get();
+                                      List<dynamic> array =
+                                          userSnapshot['cart'];
+
+                                      if (!incartArray.contains(item.id)) {
+                                        array.add(item.id);
+                                      } else {
+                                        array.remove(item.id);
+                                      }
+
+                                      userSnapshot.reference
+                                          .update({'cart': array});
+                                      setState(() {
+                                        incartArray = array;
+                                        inCart =
+                                            !inCart; // Toggle inCart status
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Icon(
+                                      incartArray.contains(item.id)
+                                          ? Icons.remove_circle_outline
+                                          : CupertinoIcons.cart,
+                                    ),
+                                  ),
                                 )
                               ]),
                         )
