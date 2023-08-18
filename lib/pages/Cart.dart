@@ -284,7 +284,7 @@ class _CartState extends State<Cart> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Total: \$${snapshot.data}',
+                          'Total: \₹${snapshot.data}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
