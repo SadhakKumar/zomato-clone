@@ -294,14 +294,13 @@ class _CartState extends State<Cart> {
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(
-                                vertical: 16,
-                                horizontal: 32), // Adjust padding as needed
+                                vertical: 16, horizontal: 32),
+                            backgroundColor: Color.fromARGB(
+                                255, 255, 110, 32), // Adjust padding as needed
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   10), // Adjust border radius as needed
-                            ),
-                            primary: Color.fromARGB(255, 255, 110,
-                                32), // Change the background color
+                            ), // Change the background color
                           ),
                           child: Text(
                             'Place Order',

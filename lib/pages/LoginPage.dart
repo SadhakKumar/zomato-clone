@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zomato_clone/pages/AdminHomePage.dart';
 import 'HomePage.dart';
 import 'RegistrationPage.dart';
 
@@ -16,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
+  String role = 'Select Role';
   bool isTextFieldEmpty = true;
 
   final _auth = FirebaseAuth.instance;
@@ -82,6 +86,30 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 32),
 
+                DropdownButtonFormField(
+                  value: role,
+                  decoration: InputDecoration(labelText: 'Category'),
+                  items: [
+                    DropdownMenuItem(
+                      value: 'Select Role',
+                      child: Text('Select Role'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'User',
+                      child: Text('User'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Admin',
+                      child: Text('Admin'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      role = value.toString();
+                    });
+                  },
+                ),
+
                 //button
 
                 ElevatedButton(
@@ -125,12 +153,21 @@ class _LoginPageState extends State<LoginPage> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-        );
+        if (emailController.text == 'sadhak@gmail.com') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminHomePage(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        }
       } else {
         print('Document does not exist on the database');
       }
@@ -148,8 +185,43 @@ class _LoginPageState extends State<LoginPage> {
         route();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('User Not Found'),
+                content: Text('No user found for that email.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+
           print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('User Not Found'),
+                content: Text('Wrong password provided for that user.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
           print('Wrong password provided for that user.');
         }
       }
