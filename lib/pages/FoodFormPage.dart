@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zomato_clone/widgets/BottomNavigation.dart';
+import 'package:local_auth/local_auth.dart';
 
 class FoodFormPage extends StatefulWidget {
   @override
@@ -29,6 +31,69 @@ class _FoodFormPageState extends State<FoodFormPage> {
         print('No image selected.');
       }
     });
+  }
+
+  final auth = LocalAuthentication();
+  String authorized = " not authorized";
+  bool _canCheckBiometric = false;
+  late List<BiometricType> _availableBiometric;
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+
+    try {
+      authenticated = await auth.authenticate(
+          localizedReason: "Scan your finger to authenticate",
+          options: const AuthenticationOptions(biometricOnly: true));
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    setState(() {
+      authorized =
+          authenticated ? "Authorized success" : "Failed to authenticate";
+      print(authorized);
+    });
+  }
+
+  Future<void> _checkBiometric() async {
+    bool canCheckBiometric = false;
+
+    try {
+      canCheckBiometric = await auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _canCheckBiometric = canCheckBiometric;
+      print(_canCheckBiometric.toString());
+    });
+  }
+
+  Future _getAvailableBiometric() async {
+    List<BiometricType> availableBiometric = [];
+
+    try {
+      availableBiometric = await auth.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    setState(() {
+      _availableBiometric = availableBiometric;
+      print(_availableBiometric.toString());
+    });
+  }
+
+  @override
+  void initState() {
+    _checkBiometric();
+    _getAvailableBiometric();
+
+    super.initState();
   }
 
   @override
@@ -129,9 +194,10 @@ class _FoodFormPageState extends State<FoodFormPage> {
                 ),
                 SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+                      await _authenticate();
                       // Now you can use the form data
                       // For example, you can send it to an API or process it further
                       // Reset the form after saving if needed

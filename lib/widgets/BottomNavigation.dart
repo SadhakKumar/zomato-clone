@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zomato_clone/pages/AdminHomePage.dart';
+import 'package:zomato_clone/pages/FoodFactScreen.dart';
 import 'package:zomato_clone/pages/FoodFormPage.dart';
 import 'package:zomato_clone/pages/HomePage.dart';
+import 'package:zomato_clone/widgets/QRScannerScreen.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -39,27 +41,27 @@ class _BottomNavigationState extends State<BottomNavigation> {
     });
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AdminHomePage()),
         );
         break;
       case 1:
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => FoodFormPage()),
         );
         break;
       case 2:
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FoodFormPage()),
+          MaterialPageRoute(builder: (context) => QRViewExample()),
         );
         break;
       case 3:
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AdminHomePage()),
+          MaterialPageRoute(builder: (context) => FoodFactScreen()),
         );
         break;
     }

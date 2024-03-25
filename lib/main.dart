@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:zomato_clone/pages/LoginPage.dart';
 import 'package:zomato_clone/pages/AdminHomePage.dart';
+import 'package:zomato_clone/widgets/finger_print_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
